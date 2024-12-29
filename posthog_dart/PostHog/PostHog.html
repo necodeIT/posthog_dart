@@ -71,7 +71,8 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">factory PostHog() {
   if (_instance == null) {
-    throw Exception(&#39;PostHog is not initialized. Please call PostHog.init() first.&#39;);
+    throw Exception(
+        &#39;PostHog is not initialized. Please call PostHog.init() first.&#39;);
   }
 
   return _instance!;
