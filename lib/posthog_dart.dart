@@ -37,7 +37,8 @@ class PostHog {
   /// Make sure to call [PostHog.init] before using this method.
   factory PostHog() {
     if (_instance == null) {
-      throw Exception('PostHog is not initialized. Please call PostHog.init() first.');
+      throw Exception(
+          'PostHog is not initialized. Please call PostHog.init() first.');
     }
 
     return _instance!;
