@@ -1,0 +1,40 @@
+name: CI/Docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-docs:
+    name: 📚 Generate Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📂 Checkout code
+      uses: actions/checkout@v3
+
+    - name: 🐦 Set up Dart
+      uses: dart-lang/setup-dart@v1
+      with:
+        sdk: stable
+
+    - name: 📦 Install dependencies
+      run: dart pub get
+
+    - name: 📝 Generate documentation
+      run: dart doc
+
+    - name: 🚀 Deploy to docs branch
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git clone --branch docs https://github.com/${{ github.repository }} docs-folder || (
+          mkdir docs-folder && cd docs-folder && git init && git remote add origin https://github.com/${{ github.repository }} && git checkout --orphan docs
+        )
+        rm -rf docs-folder/*
+        cp -r doc/api/* docs-folder/
+        cd docs-folder
+        git add .
+        git diff --cached --quiet || git commit -m "docs: generate documentation for ${{github.sha}}"
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} docs --force

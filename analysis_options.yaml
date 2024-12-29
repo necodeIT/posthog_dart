@@ -1,0 +1,68 @@
+analyzer:
+  plugins:
+    - architecture_linter
+
+architecture_linter:
+  excludes:
+    - "**.g.dart"
+
+  lint_severity: error
+
+  layers:
+    - &infra
+      name: "Infrastructure"
+      path: "(infra)"
+    - &domain
+      name: "Domain"
+      path: "(domain)"
+    - &presentation
+      name: "Presentation"
+      path: "(presentation)"
+    - &utils
+      name: "Utils"
+      path: "(utils)"
+
+  layers_config:
+    - layer: *domain
+      severity: error
+    - layer: *infra
+      severity: error
+    - layer: *presentation
+      severity: error
+    - layer: *utils
+      severity: error
+  banned_imports:
+    # Only import the module itself.
+    - layer: *domain
+      banned:
+        - *presentation
+        - *infra
+        - *domain
+        - *utils
+      # Only import the module itself.
+      # We allow infra imports for doc comments.
+    - layer: *infra
+      banned:
+        - *presentation
+        - *domain
+        - *utils
+      # Only import the module itself.
+    - layer: *presentation
+      banned:
+        - *presentation
+        - *infra
+        - *domain
+        - *utils
+
+linter:
+  rules:
+    package_api_docs: true
+    public_member_api_docs: true
+    package_prefixed_library_names: true
+    library_private_types_in_public_api: true
+    package_names: true
+    lines_longer_than_80_chars: false
+    sort_pub_dependencies: true
+    join_return_with_assignment: true
+    prefer_for_elements_to_map_fromIterable: true
+    # yet to be released: document_ignores: true

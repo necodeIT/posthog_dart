@@ -1,0 +1,45 @@
+bricks:
+  datasource:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: datasource
+  datasource-impl:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: datasource-impl
+  guard:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: guard
+  model:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: model
+  module:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: module
+  screen:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: screen
+  service:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: service
+  service-impl:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: service-impl
+  widget:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: widget
+  repo:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: repo
+  util:
+    git:
+      url: https://github.com/mcquenji/flutter_modular_bricks
+      path: util

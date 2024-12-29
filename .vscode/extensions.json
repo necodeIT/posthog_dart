@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "vivaxy.vscode-conventional-commits",
+        "jeroen-meijer.pubspec-assist",
+        "dart-code.flutter",
+        "dart-code.dart-code",
+    ]
+}
