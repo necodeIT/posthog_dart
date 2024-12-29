@@ -89,9 +89,10 @@
   final payload = {
     &#39;api_key&#39;: apiKey,
     &#39;event&#39;: eventName,
+    &#39;distinct_id&#39;: distinctId,
     &#39;properties&#39;: {
-      &#39;distinct_id&#39;: distinctId,
       ...?properties,
+      ..._userProperties,
     },
     &#39;timestamp&#39;: DateTime.now().toIso8601String(),
   };
