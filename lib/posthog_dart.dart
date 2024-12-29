@@ -23,6 +23,7 @@ class PostHog {
   static Logger logger = Logger('PostHog');
 
   String? _distinctId;
+  Map<String, dynamic> _userProperties = {};
 
   bool _enabled = true;
 
@@ -80,9 +81,10 @@ class PostHog {
     final payload = {
       'api_key': apiKey,
       'event': eventName,
+      'distinct_id': distinctId,
       'properties': {
-        'distinct_id': distinctId,
         ...?properties,
+        ..._userProperties,
       },
       'timestamp': DateTime.now().toIso8601String(),
     };
@@ -117,6 +119,7 @@ class PostHog {
     }
 
     _distinctId = distinctId;
+    _userProperties = properties ?? {};
 
     logger.fine('User identified: $distinctId');
   }
@@ -124,6 +127,7 @@ class PostHog {
   /// Resets the client. This will clear the distinct ID.
   void reset() {
     _distinctId = null;
+    _userProperties = {};
   }
 
   /// Enables analytics.
