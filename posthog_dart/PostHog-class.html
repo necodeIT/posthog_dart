@@ -93,6 +93,18 @@
 
 </dd>
 
+        <dt id="debug" class="property">
+  <span class="name"><a href="../posthog_dart/PostHog/debug.html">debug</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.6.0/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Whether the application is in debug mode.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="distinctId" class="property">
   <span class="name"><a href="../posthog_dart/PostHog/distinctId.html">distinctId</a></span>
   <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span>
@@ -138,6 +150,18 @@
 <dd class="inherited">
   A representation of the runtime type of the object.
   <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="version" class="property">
+  <span class="name"><a href="../posthog_dart/PostHog/version.html">version</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span>
+  
+
+</dt>
+<dd>
+  The version of the application.
+  <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
@@ -241,6 +265,19 @@
 
 </dd>
 
+        <dt id="screen" class="callable">
+  <span class="name"><a href="../posthog_dart/PostHog/screen.html">screen</a></span><span class="signature">(<wbr><span class="parameter" id="screen-param-screen"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">screen</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.6.0/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Call this when a navigation event occurs.
+  
+
+</dd>
+
         <dt id="toString" class="callable inherited">
   <span class="name"><a href="https://api.dart.dev/stable/3.6.0/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
     <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span>
@@ -300,8 +337,8 @@
     <h2>Static Methods</h2>
     <dl class="callables">
         <dt id="init" class="callable">
-  <span class="name"><a href="../posthog_dart/PostHog/init.html">init</a></span><span class="signature">(<wbr>{<span class="parameter" id="init-param-apiKey"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">apiKey</span>, </span><span class="parameter" id="init-param-host"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">host</span>, </span><span class="parameter" id="init-param-httpClient"><span class="type-annotation"><a href="https://pub.dev/documentation/http/1.2.2/http/Client-class.html">Client</a>?</span> <span class="parameter-name">httpClient</span></span>})
-    <span class="returntype parameter">&#8594; void</span>
+  <span class="name"><a href="../posthog_dart/PostHog/init.html">init</a></span><span class="signature">(<wbr>{<span class="parameter" id="init-param-apiKey"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">apiKey</span>, </span><span class="parameter" id="init-param-host"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">host</span>, </span><span class="parameter" id="init-param-debug"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">debug</span> = <span class="default-value">false</span>, </span><span class="parameter" id="init-param-version"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">version</span> = <span class="default-value">&#39;1.0.0&#39;</span>, </span><span class="parameter" id="init-param-httpClient"><span class="type-annotation"><a href="https://pub.dev/documentation/http/1.2.2/http/Client-class.html">Client</a>?</span> <span class="parameter-name">httpClient</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.6.0/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
   </span>
   
 

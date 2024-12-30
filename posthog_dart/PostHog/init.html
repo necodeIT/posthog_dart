@@ -57,9 +57,11 @@
 
     <section class="multi-line-signature">
       
-<span class="returntype">void</span>
+<span class="returntype"><a href="https://api.dart.dev/stable/3.6.0/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
 <span class="name ">init</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="init-param-apiKey"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">apiKey</span>, </span></li>
 <li><span class="parameter" id="init-param-host"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">host</span>, </span></li>
+<li><span class="parameter" id="init-param-debug"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">debug</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="init-param-version"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.6.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">version</span> = <span class="default-value">&#39;1.0.0&#39;</span>, </span></li>
 <li><span class="parameter" id="init-param-httpClient"><span class="type-annotation"><a href="https://pub.dev/documentation/http/1.2.2/http/Client-class.html">Client</a>?</span> <span class="parameter-name">httpClient</span>, </span></li>
 </ol>})
 
@@ -76,16 +78,22 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static void init({
+  <pre class="language-dart"><code class="language-dart">static Future&lt;void&gt; init({
   required String apiKey,
   required String host,
+  bool debug = false,
+  String version = &#39;1.0.0&#39;,
   http.Client? httpClient,
-}) {
+}) async {
   _instance = PostHog._(
     apiKey: apiKey,
     host: host,
     httpClient: httpClient,
+    debug: debug,
+    version: version,
   );
+
+  _instance!.capture(eventName: &#39;\$identify&#39;);
 }</code></pre>
 </section>
 
