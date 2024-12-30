@@ -14,6 +14,12 @@ class PostHog {
   /// The host for the PostHog project.
   final String host;
 
+  /// Whether the application is in debug mode.
+  final bool debug;
+
+  /// The version of the application.
+  final String version;
+
   final http.Client _httpClient;
 
   static PostHog? _instance;
@@ -26,6 +32,9 @@ class PostHog {
   Map<String, dynamic> _userProperties = {};
 
   bool _enabled = true;
+  bool _identifyCalled = false;
+
+  String? _screen;
 
   /// The distinct ID for the current user.
   ///
@@ -47,27 +56,35 @@ class PostHog {
   PostHog._({
     required this.apiKey,
     required this.host,
+    required this.debug,
+    required this.version,
     http.Client? httpClient,
   }) : _httpClient = httpClient ?? http.Client();
 
   /// Initializes the PostHog client.
   ///
   /// Must be called before using the client.
-  static void init({
+  static Future<void> init({
     required String apiKey,
     required String host,
+    bool debug = false,
+    String version = '1.0.0',
     http.Client? httpClient,
-  }) {
+  }) async {
     _instance = PostHog._(
       apiKey: apiKey,
       host: host,
       httpClient: httpClient,
+      debug: debug,
+      version: version,
     );
+
+    _instance!.capture(eventName: '\$identify');
   }
 
   /// Capture an event. This is the bread and butter of PostHog.
   ///
-  /// hhttps://posthog.com/docs/product-analytics/capture-events
+  /// https://posthog.com/docs/product-analytics/capture-events
   Future<void> capture({
     required String eventName,
     Map<String, dynamic>? properties,
@@ -82,10 +99,17 @@ class PostHog {
     final payload = {
       'api_key': apiKey,
       'event': eventName,
+      // if distinct_id is not provided in properties, use the one from the client
+      if (properties?.containsKey('distinct_id') == false)
+        'distinct_id': distinctId,
       'distinct_id': distinctId,
       'properties': {
         ...?properties,
         ..._userProperties,
+        'version': version,
+        if (debug) 'debug': debug,
+        if (_screen != null) '\$pathname': _screen,
+        if (_screen != null) '\$screen_name': _screen,
       },
       'timestamp': DateTime.now().toIso8601String(),
     };
@@ -119,10 +143,35 @@ class PostHog {
       return;
     }
 
+    final previousDistinctId = _distinctId;
+
     _distinctId = distinctId;
     _userProperties = properties ?? {};
 
     logger.fine('User identified: $distinctId');
+
+    await capture(eventName: '\$identify', properties: properties);
+
+    await capture(
+      eventName: '\$set',
+      properties: properties,
+    );
+
+    await capture(
+      eventName: '\$pageview',
+      properties: properties,
+    );
+
+    if (!_identifyCalled) {
+      _identifyCalled = true;
+      await capture(
+        eventName: '\$create_alias',
+        properties: {
+          'alias': previousDistinctId,
+          'distinct_id': distinctId,
+        },
+      );
+    }
   }
 
   /// Resets the client. This will clear the distinct ID.
@@ -143,6 +192,24 @@ class PostHog {
     logger.fine('Analytics disabled');
 
     _enabled = false;
+  }
+
+  /// Call this when a navigation event occurs.
+  Future<void> screen(String screen) async {
+    if (!_enabled) {
+      logger.fine('Analytics disabled, skipping screen');
+      return;
+    }
+
+    await capture(
+      eventName: '\$screen',
+      properties: {
+        '\$pathname': screen,
+        '\$screen_name': screen,
+      },
+    );
+
+    _screen = screen;
   }
 
   /// Disposes of the client. This will close the underlying HTTP client.
