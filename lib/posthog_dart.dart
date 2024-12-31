@@ -60,7 +60,7 @@ class PostHog {
     required this.version,
     http.Client? httpClient,
   }) : _httpClient = httpClient ?? http.Client() {
-    logger.fine('PostHog initialized');
+    logger.finer('PostHog initialized');
   }
 
   /// Initializes the PostHog client.
@@ -92,13 +92,13 @@ class PostHog {
     Map<String, dynamic>? properties,
   }) async {
     if (!_enabled) {
-      logger.fine('Analytics disabled, skipping capture');
+      logger.finer('Analytics disabled, skipping capture');
       return;
     }
 
     final url = Uri.parse('$host/capture/');
 
-    logger.fine('Sending event: $eventName with properties: $properties');
+    logger.finer('Sending event: $eventName with properties: $properties');
 
     final payload = {
       'api_key': apiKey,
@@ -115,6 +115,7 @@ class PostHog {
         if (_screen != null) '\$screen_name': _screen,
         '\$os': os_detect.operatingSystem,
         '\$os_version': os_detect.operatingSystemVersion,
+        '\$lib': 'posthog-dart',
       },
       'timestamp': DateTime.now().toIso8601String(),
     };
@@ -132,7 +133,7 @@ class PostHog {
         throw Exception('Failed to send event: ${response.body}');
       }
 
-      logger.fine('Event sent: $eventName');
+      logger.finer('Event sent: $eventName');
     } catch (e, s) {
       logger.warning('Failed to send event: $eventName', e, s);
     }
@@ -146,7 +147,7 @@ class PostHog {
     Map<String, dynamic>? properties,
   }) async {
     if (!_enabled) {
-      logger.fine('Analytics disabled, skipping identify');
+      logger.finer('Analytics disabled, skipping identify');
       return;
     }
 
@@ -154,7 +155,7 @@ class PostHog {
 
     _distinctId = distinctId;
 
-    logger.fine('User identified: $distinctId');
+    logger.finer('User identified: $distinctId');
 
     await capture(eventName: '\$identify', properties: {
       if (properties != null) '\$set': properties,
@@ -188,14 +189,14 @@ class PostHog {
 
   /// Enables analytics.
   void enable() {
-    logger.fine('Analytics enabled');
+    logger.finer('Analytics enabled');
 
     _enabled = true;
   }
 
   /// Disables analytics.
   void disable() {
-    logger.fine('Analytics disabled');
+    logger.finer('Analytics disabled');
 
     _enabled = false;
   }
@@ -203,19 +204,15 @@ class PostHog {
   /// Call this when a navigation event occurs.
   Future<void> screen(String screen) async {
     if (!_enabled) {
-      logger.fine('Analytics disabled, skipping screen');
+      logger.finer('Analytics disabled, skipping screen');
       return;
     }
 
+    _screen = screen;
+
     await capture(
       eventName: '\$screen',
-      properties: {
-        '\$pathname': screen,
-        '\$screen_name': screen,
-      },
     );
-
-    _screen = screen;
   }
 
   /// Disposes of the client. This will close the underlying HTTP client.
