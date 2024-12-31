@@ -29,7 +29,6 @@ class PostHog {
   static Logger logger = Logger('PostHog');
 
   String? _distinctId;
-  Map<String, dynamic> _userProperties = {};
 
   bool _enabled = true;
   bool _identifyCalled = false;
@@ -79,7 +78,7 @@ class PostHog {
       version: version,
     );
 
-    _instance!.capture(eventName: '\$identify');
+    _instance!.capture(eventName: '\$pageview');
   }
 
   /// Capture an event. This is the bread and butter of PostHog.
@@ -96,6 +95,8 @@ class PostHog {
 
     final url = Uri.parse('$host/capture/');
 
+    logger.fine('Sending event: $eventName with properties: $properties');
+
     final payload = {
       'api_key': apiKey,
       'event': eventName,
@@ -105,7 +106,6 @@ class PostHog {
       'distinct_id': distinctId,
       'properties': {
         ...?properties,
-        ..._userProperties,
         'version': version,
         if (debug) 'debug': debug,
         if (_screen != null) '\$pathname': _screen,
@@ -113,6 +113,8 @@ class PostHog {
       },
       'timestamp': DateTime.now().toIso8601String(),
     };
+
+    logger.finest('Payload: ${Map.from(payload)..['api_key'] = '***'}');
 
     try {
       final response = await _httpClient.post(
@@ -146,24 +148,24 @@ class PostHog {
     final previousDistinctId = _distinctId;
 
     _distinctId = distinctId;
-    _userProperties = properties ?? {};
 
     logger.fine('User identified: $distinctId');
 
-    await capture(eventName: '\$identify', properties: properties);
+    await capture(eventName: '\$identify', properties: {
+      if (properties != null) '\$set': properties,
+    });
 
-    await capture(
-      eventName: '\$set',
-      properties: properties,
-    );
-
-    await capture(
-      eventName: '\$pageview',
-      properties: properties,
-    );
+    if (_identifyCalled) {
+      // a new user has logged in, count as seperate pageview
+      await capture(
+        eventName: '\$pageview',
+      );
+    }
 
     if (!_identifyCalled) {
       _identifyCalled = true;
+
+      // create alias for the random uuid used before identify
       await capture(
         eventName: '\$create_alias',
         properties: {
@@ -177,7 +179,6 @@ class PostHog {
   /// Resets the client. This will clear the distinct ID.
   void reset() {
     _distinctId = null;
-    _userProperties = {};
   }
 
   /// Enables analytics.
