@@ -80,13 +80,13 @@
   Map&lt;String, dynamic&gt;? properties,
 }) async {
   if (!_enabled) {
-    logger.fine(&#39;Analytics disabled, skipping capture&#39;);
+    logger.finer(&#39;Analytics disabled, skipping capture&#39;);
     return;
   }
 
   final url = Uri.parse(&#39;$host&#47;capture&#47;&#39;);
 
-  logger.fine(&#39;Sending event: $eventName with properties: $properties&#39;);
+  logger.finer(&#39;Sending event: $eventName with properties: $properties&#39;);
 
   final payload = {
     &#39;api_key&#39;: apiKey,
@@ -103,6 +103,7 @@
       if (_screen != null) &#39;\$screen_name&#39;: _screen,
       &#39;\$os&#39;: os_detect.operatingSystem,
       &#39;\$os_version&#39;: os_detect.operatingSystemVersion,
+      &#39;\$lib&#39;: &#39;posthog-dart&#39;,
     },
     &#39;timestamp&#39;: DateTime.now().toIso8601String(),
   };
@@ -120,7 +121,7 @@
       throw Exception(&#39;Failed to send event: ${response.body}&#39;);
     }
 
-    logger.fine(&#39;Event sent: $eventName&#39;);
+    logger.finer(&#39;Event sent: $eventName&#39;);
   } catch (e, s) {
     logger.warning(&#39;Failed to send event: $eventName&#39;, e, s);
   }

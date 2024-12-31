@@ -75,19 +75,15 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; screen(String screen) async {
   if (!_enabled) {
-    logger.fine(&#39;Analytics disabled, skipping screen&#39;);
+    logger.finer(&#39;Analytics disabled, skipping screen&#39;);
     return;
   }
 
+  _screen = screen;
+
   await capture(
     eventName: &#39;\$screen&#39;,
-    properties: {
-      &#39;\$pathname&#39;: screen,
-      &#39;\$screen_name&#39;: screen,
-    },
   );
-
-  _screen = screen;
 }</code></pre>
 </section>
 

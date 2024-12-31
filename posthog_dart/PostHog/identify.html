@@ -80,7 +80,7 @@
   Map&lt;String, dynamic&gt;? properties,
 }) async {
   if (!_enabled) {
-    logger.fine(&#39;Analytics disabled, skipping identify&#39;);
+    logger.finer(&#39;Analytics disabled, skipping identify&#39;);
     return;
   }
 
@@ -88,7 +88,7 @@
 
   _distinctId = distinctId;
 
-  logger.fine(&#39;User identified: $distinctId&#39;);
+  logger.finer(&#39;User identified: $distinctId&#39;);
 
   await capture(eventName: &#39;\$identify&#39;, properties: {
     if (properties != null) &#39;\$set&#39;: properties,
