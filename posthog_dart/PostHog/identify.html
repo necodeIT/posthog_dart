@@ -87,24 +87,24 @@
   final previousDistinctId = _distinctId;
 
   _distinctId = distinctId;
-  _userProperties = properties ?? {};
 
   logger.fine(&#39;User identified: $distinctId&#39;);
 
-  await capture(eventName: &#39;\$identify&#39;, properties: properties);
+  await capture(eventName: &#39;\$identify&#39;, properties: {
+    if (properties != null) &#39;\$set&#39;: properties,
+  });
 
-  await capture(
-    eventName: &#39;\$set&#39;,
-    properties: properties,
-  );
-
-  await capture(
-    eventName: &#39;\$pageview&#39;,
-    properties: properties,
-  );
+  if (_identifyCalled) {
+    &#47;&#47; a new user has logged in, count as seperate pageview
+    await capture(
+      eventName: &#39;\$pageview&#39;,
+    );
+  }
 
   if (!_identifyCalled) {
     _identifyCalled = true;
+
+    &#47;&#47; create alias for the random uuid used before identify
     await capture(
       eventName: &#39;\$create_alias&#39;,
       properties: {
