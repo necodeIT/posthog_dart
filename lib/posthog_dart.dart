@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
+import 'package:os_detect/os_detect.dart' as os_detect;
 
 /// PostHog client for Dart using the HTTP API.
 class PostHog {
@@ -58,7 +59,9 @@ class PostHog {
     required this.debug,
     required this.version,
     http.Client? httpClient,
-  }) : _httpClient = httpClient ?? http.Client();
+  }) : _httpClient = httpClient ?? http.Client() {
+    logger.fine('PostHog initialized');
+  }
 
   /// Initializes the PostHog client.
   ///
@@ -110,6 +113,8 @@ class PostHog {
         if (debug) 'debug': debug,
         if (_screen != null) '\$pathname': _screen,
         if (_screen != null) '\$screen_name': _screen,
+        '\$os': os_detect.operatingSystem,
+        '\$os_version': os_detect.operatingSystemVersion,
       },
       'timestamp': DateTime.now().toIso8601String(),
     };
