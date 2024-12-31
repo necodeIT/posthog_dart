@@ -101,6 +101,8 @@
       if (debug) &#39;debug&#39;: debug,
       if (_screen != null) &#39;\$pathname&#39;: _screen,
       if (_screen != null) &#39;\$screen_name&#39;: _screen,
+      &#39;\$os&#39;: os_detect.operatingSystem,
+      &#39;\$os_version&#39;: os_detect.operatingSystemVersion,
     },
     &#39;timestamp&#39;: DateTime.now().toIso8601String(),
   };
